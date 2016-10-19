@@ -1,0 +1,18 @@
+﻿  Source.cpp
+c:\users\ogiwara\desktop\native\tetris2\tetris2\block.h(10): error C2143: 構文エラー: ';' が '*' の前にありません。
+c:\users\ogiwara\desktop\native\tetris2\tetris2\block.h(10): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+c:\users\ogiwara\desktop\native\tetris2\tetris2\block.h(10): error C2238: ';' の前に無効なトークンがあります。
+  Drawer.cpp
+c:\users\ogiwara\desktop\native\tetris2\tetris2\block.h(10): error C2143: 構文エラー: ';' が '*' の前にありません。
+c:\users\ogiwara\desktop\native\tetris2\tetris2\block.h(10): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+c:\users\ogiwara\desktop\native\tetris2\tetris2\block.h(10): error C2238: ';' の前に無効なトークンがあります。
+c:\users\ogiwara\desktop\native\tetris2\tetris2\drawer.cpp(16): error C2039: 'c': 'Block' のメンバーではありません。
+  c:\users\ogiwara\desktop\native\tetris2\tetris2\block.h(13): note: 'Block' の宣言を確認してください
+c:\users\ogiwara\desktop\native\tetris2\tetris2\drawer.cpp(26): error C2039: 'c': 'Block' のメンバーではありません。
+  c:\users\ogiwara\desktop\native\tetris2\tetris2\block.h(13): note: 'Block' の宣言を確認してください
+  コードを生成中...
+  コンパイル中...
+  Block.cpp
+c:\users\ogiwara\desktop\native\tetris2\tetris2\block.cpp(40): error C2440: '=': 'Color' から 'Color *' に変換できません。
+  c:\users\ogiwara\desktop\native\tetris2\tetris2\block.cpp(40): note: この変換を実行可能なユーザー定義変換演算子がないか、または演算子を呼び出せません。
+  コードを生成中...
