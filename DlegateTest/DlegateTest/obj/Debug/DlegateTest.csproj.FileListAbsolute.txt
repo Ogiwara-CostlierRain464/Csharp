@@ -1,0 +1,6 @@
+C:\Users\ogiwara\Documents\GitHub\Csharp\DlegateTest\DlegateTest\bin\Debug\DlegateTest.exe.config
+C:\Users\ogiwara\Documents\GitHub\Csharp\DlegateTest\DlegateTest\bin\Debug\DlegateTest.exe
+C:\Users\ogiwara\Documents\GitHub\Csharp\DlegateTest\DlegateTest\bin\Debug\DlegateTest.pdb
+C:\Users\ogiwara\Documents\GitHub\Csharp\DlegateTest\DlegateTest\obj\Debug\DlegateTest.csprojResolveAssemblyReference.cache
+C:\Users\ogiwara\Documents\GitHub\Csharp\DlegateTest\DlegateTest\obj\Debug\DlegateTest.exe
+C:\Users\ogiwara\Documents\GitHub\Csharp\DlegateTest\DlegateTest\obj\Debug\DlegateTest.pdb
