@@ -28,14 +28,14 @@ namespace JoinMessage
 
         private void onPlayerJoin(object o,PlayerEventArgs e)
         {
-            e.Player.Level.BroadcastMessage($"{e.Player.NameTag} が参加しました");
-            Console.WriteLine($"[INFO]{e.Player.NameTag} が参加しました");
+            e.Player.Level.BroadcastMessage($"{e.Player.Username} が参加しました");
+            Console.WriteLine($"[INFO]{e.Player.Username} が参加しました");
         }
 
         private void onPlayerLeave(object o,PlayerEventArgs e)
         {
-            e.Player.Level.BroadcastMessage($"{e.Player.NameTag} が退出しました");
-            Console.WriteLine($"[INFO]{e.Player.NameTag} が退出しました");
+            e.Player.Level.BroadcastMessage($"{e.Player.Username} が退出しました");
+            Console.WriteLine($"[INFO]{e.Player.Username} が退出しました");
         }
     }
 }
