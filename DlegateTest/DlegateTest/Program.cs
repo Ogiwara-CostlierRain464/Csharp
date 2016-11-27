@@ -26,6 +26,7 @@ namespace DlegateTest
         {
             HandlerException += Excep1;
             HandlerException += Excep2;
+            Func<int, bool> f = n => n > 10;
         }
 
         public void Run(string message)
