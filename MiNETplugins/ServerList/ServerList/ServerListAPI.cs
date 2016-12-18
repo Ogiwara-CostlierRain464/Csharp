@@ -22,6 +22,10 @@ namespace ServerList
     class ServerListAPI
     {
         Class1 plugin;
+        /// <summary>
+        /// このtokenは、ダウンロードしたServerList.pharのServerListAPIクラスのメンバ変数に記入してあります。
+        /// このtokenは、「RasisTeam」サーバーのものです
+        /// </summary>
         string token = "Q3gvR1pxaFhlbWxJWFN0Y1ZsVmlJaW5HSk5zSXFFOWFhcU00SUdoVFFmZUVvaWh4SnQ1Yll5RHRMbEdPTDk1ZklhRVgvOUNoTEZudHZtYjZPNkk1Y1NpSnV3MC9DS3Vld3c4eXJMS0lNd2xoYnc3bzdhdEFjeVE0dGhVWE5JZ3M3TUQwNlRaKzFwUmdYeEZUTFg1aGgxa1JLY2tIT0Mrc3F5eVNIV0hPQ2NsOUF2eXBzaXJrV3F5YjZxOEZ4VmNPM0J6QnVlM3NrZkc0YkpzSVZ1VS9qbWhYc0RaYithR3Z5TlE0TjZuQ00zUHpLcXJEdGl0Y2lITGoxNS9OWTJPRjFyQzY3Tnh4c1hQdkZZaFNyek01ZU5ZSXhVRnFwU2YwY1J2UGZJWmFHL1Q3bHZpTkFldHRWTjhESjQrak92TXhTdlYxeVRKQiswVEduZUlsY0NIUC96dmtHL0JsZmh6YnNjNTAvMHo3NUgvcUsyVVRadm41MllvMURkWUREcmEyZjl6MVA3a2Y4VVlsZmNXeE1PMXlzQVk0eDZjcWVHRFB5dW5zM25xYTZQdnpVZkc0eUJabXJGcFZZRjV5VFJiL2dGK21qU2RkYXNQb2JwU2lkcGVsRjAxOHJuUHlzOFUxeGtQTGlKTU5PeGM9";
 
         string accesstoken = "";
@@ -33,6 +37,10 @@ namespace ServerList
             plugin = p;
         }
 
+        /// <summary>
+        /// Debugビルド時に通信内容をstdoutに送る
+        /// </summary>
+        /// <param name="content"></param>
         [Conditional("DEBUG")]
         public void Log(string content)
         {
@@ -61,7 +69,7 @@ namespace ServerList
         {
             SendData("update", new Dictionary<string, string> {
             { "type","stop"},
-            { "access_token",token }//TODO
+            { "access_token",accesstoken }//TODO
             });
         }
 
@@ -70,7 +78,7 @@ namespace ServerList
             SendData("update", new Dictionary<string, string> {
             { "max","20"},
             { "type","time"},
-            { "access_token",token }//TODO
+            { "access_token",accesstoken }//TODO
             });
         }
 
@@ -79,10 +87,14 @@ namespace ServerList
             { "max","20"},
             { "now","3" },
             { "type",type},
-            { "access_token",token }//TODO
+            { "access_token",accesstoken }//TODO
             });
         }
-
+        /// <summary>
+        /// 正しいaccess tokenが取得できない不具合あり
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="data"></param>
         async public void SendData(string endpoint, Dictionary<string, string> data)
         {
             var client = new HttpClient();
