@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Net.Http;
 using System.Net;
 using System.IO;
 using System.Web;
+using System.Net.Http.Headers;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,7 +30,11 @@ namespace cURLTest
         public void run()
         {
             login();
-            /*access();
+
+            Thread.Sleep(1000);
+
+            access();
+            Thread.Sleep(1000);
             for (int i = 0; i <= 5;i++)
             {
                 //login();
@@ -36,19 +42,20 @@ namespace cURLTest
                 timer();
                 System.Threading.Thread.Sleep(30000);
             }
-            Logout();*/
+            Logout();
         }
 
         public void Logout()
         {
             sendData("update", new Dictionary<string, string> {
             { "type","stop"},
-            { "access_token",TOKEN }//TODO
+            { "access_token",accesstoken }//TODO
             });
         }
 
         public void login()
         {
+            Console.WriteLine("LOGIN");
             sendData("update",new Dictionary<string, string> {
                 { "max","150"},
                 { "now","30" },
@@ -59,6 +66,7 @@ namespace cURLTest
 
         public void access()
         {
+            Console.WriteLine("ACCESS");
             sendData("push", new Dictionary<string, string> {
                 { "state","1"},
                 { "access_token",accesstoken }
@@ -77,6 +85,7 @@ namespace cURLTest
 
         public void timer()
         {
+            Console.WriteLine("TIMER");
             sendData("update", new Dictionary<string, string> {
                 { "max","20"},
                 { "type","time" },
@@ -84,16 +93,24 @@ namespace cURLTest
             });
         }
 
-        public void sendData(string endpoint,Dictionary<string,string> data)
+        async public void sendData(string endpoint,Dictionary<string,string> data)
         {
-            /*var client = new HttpClient();
-            client.Timeout = TimeSpan.Parse("5");//?
+            var client = new HttpClient();
+
+            client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "pmmp");
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("Plugin:hXBsxY_P7_")));
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "*/*");//AcceptはPropertyがNG
+           // client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "multipart/form-data");
+            //client.DefaultRequestHeaders.Connection.Clear();
+            //client.DefaultRequestHeaders.ConnectionClose = true;
+
 
             var requestContent = new FormUrlEncodedContent(data);
-            
+            //requestContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
 
             HttpResponseMessage respone = await client.PostAsync(
-                    "http://api.pmmp.jp.net/" + endpoint , requestContent
+                    "http://api.pmmp.jp.net/" + endpoint, requestContent
                 );
 
             HttpContent responseContent = respone.Content;
@@ -105,7 +122,15 @@ namespace cURLTest
                 Result r = JsonConvert.DeserializeObject<Result>(json);
                 accesstoken = r?.token?.Replace("'", "");
             }
-            string url = "http://api.pmmp.jp.net/" + endpoint;
+
+            respone.Dispose();
+            responseContent.Dispose();
+            requestContent.Dispose();
+            client.Dispose();
+            
+
+            //汚い…
+            /*string url = "http://api.pmmp.jp.net/" + endpoint;
             WebRequest myReq = WebRequest.Create(url);
             string credentials = "Plugin:hXBsxY_P7_";
             CredentialCache mycache = new CredentialCache();
@@ -127,7 +152,8 @@ namespace cURLTest
                 }
             }*/
 
-            Encoding enc = Encoding.GetEncoding("shift_jis");
+            //汚い!!!
+            /*Encoding enc = Encoding.GetEncoding("shift_jis");
 
             string param = "";
             foreach (string key in data.Keys)
@@ -158,7 +184,7 @@ namespace cURLTest
             }
             Console.WriteLine("TOKEN" + r?.token);
             Console.WriteLine(json);
-            sr.Close();
+            sr.Close();*/
         }
     }
 

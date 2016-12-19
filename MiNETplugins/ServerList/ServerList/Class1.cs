@@ -17,22 +17,58 @@ namespace ServerList
         ServerListAPI api;
         bool run = true;
 
+        public MiNetServer Server
+        {
+            get
+            {
+                return Context.Server;
+            }
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();
             api = new ServerListAPI(this);
             Task.Run(() => {
+                api.Login();
                 while (run)
                 {
-                    api.Login();
-                    Thread.Sleep(10000);
+                    api.UpDateTime();
+                    Thread.Sleep(20000);
                 }
             });
+
+            Context.Server.PlayerFactory.PlayerCreated += (s,a) =>
+            {
+                Player p = a.Player;
+                p.PlayerJoin += OnPlayerJoin;
+                p.PlayerLeave += OnPlayerQuit;
+            };
         }
 
-        public MiNetServer getServer()
+        [Command(Name ="event",Description = "Change server state")]
+        public void Event(Player p,string[] args)
         {
-            return Context.Server;
+            if (args.Length >= 1)
+            {
+                api.Event(args[1]);
+            }
+        }
+
+        public void OnPlayerJoin(object o,PlayerEventArgs a)
+        {
+            api.UpDatePlayers("join");
+        }
+
+        public void OnPlayerQuit(object o,PlayerEventArgs a)
+        {
+            api.UpDatePlayers("quit");
+        }
+
+        public override void OnDisable()
+        {
+            run = false;
+            api.Logout();
         }
     }
 }
