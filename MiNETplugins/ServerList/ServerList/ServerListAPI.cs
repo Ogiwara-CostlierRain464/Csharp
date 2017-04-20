@@ -41,51 +41,55 @@ namespace ServerList
         [Conditional("DEBUG")]
         public void Log(string content)
         {
-            Console.WriteLine(content);
+            Console.WriteLine(">>" +  content);
         }
         /// <summary>
         /// Login
         /// </summary>
-        public void Login()
+        public async Task Login()
         {
-            SendData("update", new Dictionary<string, string> {
+            await SendData("update", new Dictionary<string, string> {
             { "max",Config.GetProperty("MaxNumberOfPlayers",20).ToString()},
             { "now","0"},
             { "type","start" },
             { "server_token",token }
             });
 
-            SendData("push", new Dictionary<string, string> {
+            Log("Login(login->access)");
+
+            await SendData("push", new Dictionary<string, string> {
             { "state","1"},
-            { "access_token",accesstoken }//TODO
+            { "access_token",accesstoken }
             });
+            Log("Logined");
         }
        
 
-        public void Logout()
+        public async Task Logout()
         {
-            SendData("update", new Dictionary<string, string> {
+            await SendData("update", new Dictionary<string, string> {
             { "type","stop"},
             { "access_token",accesstoken }//TODO
             });
         }
 
-        public void Event(string status)
+        public async Task Event(string status)
         {
             status = status == "on" ? "event" : "normal";
-            SendData("update", new Dictionary<string, string> {
+            await SendData("update", new Dictionary<string, string> {
             { "type",status},
             { "access_token",accesstoken }//TODO
             });
         }
 
-        public void UpDateTime()
+        public async Task UpDateTime()
         {
-            SendData("update", new Dictionary<string, string> {
+            await SendData("update", new Dictionary<string, string> {
             { "max",Config.GetProperty("MaxNumberOfPlayers",20).ToString()},
             { "type","time"},
             { "access_token",accesstoken }//TODO
             });
+            Log("UpDateTime");
         }
 
 
@@ -93,8 +97,8 @@ namespace ServerList
         /// プレイヤー入退出時に、人数の変更を適用します。
         /// </summary>
         /// <param name="type"></param>
-        public void UpDatePlayers(string type){
-            SendData("update", new Dictionary<string, string> {
+        public async Task UpDatePlayers(string type){
+            await SendData("update", new Dictionary<string, string> {
             { "max",Config.GetProperty("MaxNumberOfPlayers",20).ToString()},
             { "now",plugin.Server.UserManager.Users.ToList().Count.ToString() },
             { "type",type},
@@ -106,7 +110,7 @@ namespace ServerList
         /// </summary>
         /// <param name="endpoint"></param>
         /// <param name="data"></param>
-        async public void SendData(string endpoint, Dictionary<string, string> data)
+        async public Task<string> SendData(string endpoint, Dictionary<string, string> data)
         {
             using (var client = new HttpClient())
             {
@@ -128,6 +132,7 @@ namespace ServerList
                     Log(json);
                     Result r =  JsonConvert.DeserializeObject<Result>(json);
                     accesstoken = r?.token?.Replace("'","");
+                    return r.msg;
                 }
             }
         }

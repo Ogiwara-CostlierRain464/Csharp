@@ -29,12 +29,15 @@ namespace ServerList
         {
             base.OnEnable();
             api = new ServerListAPI(this);
-            Task.Run(() => {
-                api.Login();
+            Task.Run(async() => {
+                await api.Login();
+                Console.WriteLine("Login-> while(!)");
                 while (run)
                 {
-                    api.UpDateTime();
-                    Thread.Sleep(20000);
+                    await api.UpDateTime();
+                    Console.WriteLine("startsleep");
+                    await Task.Delay(2000);
+                    Console.WriteLine("endsleep");
                 }
             });
 
@@ -47,28 +50,29 @@ namespace ServerList
         }
 
         [Command(Name ="event",Description = "Change server state")]
-        public void Event(Player p,string[] args)
+        public async void Event(Player p,string[] args)
         {
             if (args.Length >= 1)
             {
-                api.Event(args[1]);
+                await api.Event(args[1]);
             }
         }
 
-        public void OnPlayerJoin(object o,PlayerEventArgs a)
+        public async void OnPlayerJoin(object o,PlayerEventArgs a)
         {
-            api.UpDatePlayers("join");
+            await api.UpDatePlayers("join");
         }
 
-        public void OnPlayerQuit(object o,PlayerEventArgs a)
+        public async void OnPlayerQuit(object o,PlayerEventArgs a)
         {
-            api.UpDatePlayers("quit");
+            await api.UpDatePlayers("quit");
         }
 
-        public override void OnDisable()
+        public async override void OnDisable()//Override元が非Asyncでも問題ない
         {
+            base.OnDisable();
             run = false;
-            api.Logout();
+            await api.Logout();
         }
     }
 }
