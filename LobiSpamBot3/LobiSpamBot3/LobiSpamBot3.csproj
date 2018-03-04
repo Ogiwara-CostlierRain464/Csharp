@@ -39,7 +39,7 @@
       <HintPath>.\LobiAPI.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\Desktop\SpamBot\LobiSpamBot\ConsoleApplication1\ConsoleApplication1\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\C#\LobiTest1\LobiTest1\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
