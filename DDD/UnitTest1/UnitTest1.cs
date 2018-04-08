@@ -41,8 +41,6 @@ namespace UnitTest1
             Assert.Equal(0, o.OrderNumber);
         }
 
-
-        //[Ignore]
         [Fact]
         public void OrderNumberCantBeZeroAfterReconstitution()
         {
@@ -94,7 +92,7 @@ namespace UnitTest1
             Assert.Equal(0, o.TotalAmount);
         }
 
-        [Fact(Skip = "reason")]
+        [Fact]
         public void OrderWithLinesHasTotalAmount()
         {
             var o = new Order(new Customer());
@@ -133,8 +131,23 @@ namespace UnitTest1
         public void CanAddOrderLine()
         {
             var o = new Order(new Customer());
+            var ol = new OrderLine(new Product("Chair", 52.00));
+            o.AddOrderLine(ol);
+            Assert.Equal(1, o.OrderLines.Count);
+        }
 
+        [Fact]
+        public void OrderHasSnapshotOfRealCustomer(){
+            var c = new Customer
+            {
+                Name = "Volvo"
+            };
 
+            var o = new Order(c);
+            c.Name = "Saab";
+
+            Assert.Equal("Saab", c.Name);
+            Assert.Equal("Volvo", o.Customer.Name);
         }
 
     }

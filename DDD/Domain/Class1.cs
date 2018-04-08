@@ -7,6 +7,8 @@ namespace Domain
 {
     public class Customer{
         private int _customerNumber = 0;
+        public string Name;
+
         public int CustomerNumber
         {
             get { return _customerNumber; }
@@ -20,20 +22,60 @@ namespace Domain
             }
             return (obj as Customer).CustomerNumber == _customerNumber;
         }
+
+        public CustomerSnapshot TakeSnapshot()
+        {
+            var snapshot = new CustomerSnapshot();
+            snapshot.CustomerNumber = _customerNumber;
+            snapshot.Name = Name;
+
+            return snapshot;
+        }
+    }
+
+    public class ReferencePerson{
+
+        public readonly string FirstName;
+        public readonly string LastName;
+
+		public override bool Equals(object obj)
+		{
+            var other = obj as ReferencePerson;
+            return other != null
+                && GetType() == other.GetType()
+                                     && FirstName == other.FirstName
+                                     && LastName == other.LastName;
+
+
+		}
+	}
+
+    public class CustomerSnapshot{
+        public int CustomerNumber;
+        public string Name;
     }
 
     public class Order
     {
 
-        public readonly Customer Customer;
+        public readonly CustomerSnapshot Customer;
+        public readonly OrderType OrderType;
+        public readonly ReferencePerson ReferencePerson;
+
         private DateTime _orderDate;
         private int _orderNumber;
+        private readonly List<OrderLine> _orderLines = new List<OrderLine>();
 
         public Order(Customer customer)
         {
-            Customer = customer;
+            Customer = customer.TakeSnapshot();
             _orderDate = DateTime.Now;
             _orderNumber = 0;
+        }
+
+        public IReadOnlyList<OrderLine> OrderLines
+        {
+            get { return _orderLines.AsReadOnly(); }
         }
 
         public DateTime OrderDate
@@ -46,15 +88,25 @@ namespace Domain
             get { return _orderNumber; }
         }
 
-        public int TotalAmount
+        public double TotalAmount
         {
-            get { return 0; }
+            get {
+                double sum = 0;
+                foreach (OrderLine ol in _orderLines)
+                    sum += ol.TotalAmout;
+
+                return sum;
+            }
         }
 
         public void AddOrderLine(OrderLine ol)
         {
-            throw new NotImplementedException();
+            _orderLines.Add(ol);
         }
+    }
+
+    public enum OrderType{
+        
     }
 
 
@@ -91,6 +143,9 @@ namespace Domain
         List<Order> GetOrders(Customer c);
     }
 
+    public interface IWorkspace{
+        object GetById(Type typeToGet, object idValue);
+    }
 
     public class MyTrace
     {
